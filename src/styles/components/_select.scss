@@ -1,0 +1,14 @@
+.selection-search {
+  position: relative;
+}
+.list {
+  width: 100%;
+  position: absolute;
+
+  & li {
+    cursor: pointer;
+    padding: .5rem 0;
+    border-bottom: 1px solid #eee;
+    text-transform: capitalize;
+  }
+}

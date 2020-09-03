@@ -1,26 +1,40 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import Button from "./components/Button";
+import Switch from "./components/Switch";
+import SelectionSearch from "./components/SelectionSearch";
+import List from "./components/List";
+import Tooltip from "./components/Tooltip";
+import Modal from "././components/Modal/";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export default class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isOpen: false,
+    };
+  }
+  toogleModal = () => {
+    this.setState({ ...this.state, isOpen: !this.state.isOpen });
+  };
+  render() {
+    return (
+      <>
+        <Tooltip title="hihi" place="right">
+          <Button className="btn btn--primary" text="Button" />
+        </Tooltip>
+        <Tooltip title="hihi" place="bottom">
+          <Switch />
+        </Tooltip>
+        <Tooltip title="hihi" place="left">
+          <SelectionSearch>{(data) => <List data={data} />}</SelectionSearch>
+        </Tooltip>
+        <Button
+          className="btn btn--primary"
+          onClick={this.toogleModal}
+          text="Open modal"
+        />
+        <Modal isOpen={this.state.isOpen} toggle={this.toogleModal} />
+      </>
+    );
+  }
 }
-
-export default App;
