@@ -14,14 +14,14 @@ export default class SelectionSearch extends Component {
       query: "",
     };
   }
-  handleSearch(e) {
+  handleSearch = (e) => {
     const condition = new RegExp(e.target.value, "i");
     const result = data.filter(function (child) {
       return condition.test(child.country);
     });
-    
+
     this.setState({ dataFound: result, query: e.target.value });
-  }
+  };
   render() {
     return (
       <div className="selection-search">

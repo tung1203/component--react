@@ -7,18 +7,16 @@ export default class Switch extends Component {
       trigger: false,
     };
   }
-  handleSwitch() {
+  handleSwitch = () => {
     this.setState({ trigger: !this.state.trigger });
-  }
+  };
   render() {
     return (
       <div
         className={`switch switch--round ${
           this.state.trigger ? "trigger" : ""
         }`}
-        onClick={() => {
-          this.handleSwitch();
-        }}
+        onClick={this.handleSwitch}
       >
         <span className="slider"></span>
       </div>

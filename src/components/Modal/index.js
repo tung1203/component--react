@@ -4,22 +4,21 @@ import Button from "../Button";
 
 export default class index extends Component {
   render() {
-    return this.props.isOpen
+    const { isOpen, toggle } = this.props;
+    return isOpen
       ? ReactDOM.createPortal(
           <>
-            <div className={`modal ${this.props.isOpen ? "show" : "fade"}`}>
+            <div className={`modal ${isOpen ? "show" : "fade"}`}>
               <div className="modal__content">
                 <div className="modal__header">
-                  <h5 className="modal__title" id="exampleModalLabel">
-                    Modal title
-                  </h5>
+                  <h5 className="modal__title">Modal title</h5>
                   <Button
                     className="btn"
                     onClick={() => {
-                      this.props.toggle();
+                      toggle();
                     }}
                     text="&times;"
-                    style={{ marginRight: .5 + "rem" }}
+                    style={{ marginRight: 0.5 + "rem" }}
                   />
                 </div>
                 <div className="modal__body">...</div>
@@ -27,7 +26,7 @@ export default class index extends Component {
                   <Button
                     className="btn"
                     onClick={() => {
-                      this.props.toggle();
+                      toggle();
                     }}
                     text="Close"
                     style={{ marginRight: 1 + "rem" }}
@@ -35,16 +34,14 @@ export default class index extends Component {
                   <Button
                     className="btn btn--primary"
                     onClick={() => {
-                      this.props.toggle();
+                      toggle();
                     }}
                     text="Save changes"
                   />
                 </div>
               </div>
             </div>
-            <div
-              className={`overlay ${this.props.isOpen ? "show" : "fade"}`}
-            ></div>
+            <div className={`overlay ${isOpen ? "show" : "fade"}`}></div>
           </>,
           document.body
         )

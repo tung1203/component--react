@@ -1,11 +1,14 @@
 import React, { Component } from "react";
+import ReactDom from "react-dom";
 
 export default class index extends Component {
   render() {
-    return (
-      <div className={`tooltip tooltip--${this.props.place}`} data-text={this.props.title}>
-        {this.props.children}
-      </div>
+    const { title, place, children } = this.props;
+    return ReactDom.createPortal(
+      <div className={`tooltip tooltip--${place}`} data-text={title}>
+        {children}
+      </div>,
+      document.body
     );
   }
 }
