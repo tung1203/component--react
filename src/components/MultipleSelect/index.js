@@ -29,13 +29,14 @@ export default class index extends Component {
     };
     this.wrapRef = React.createRef();
   }
-
+  regexSearch = (child, value) => {
+    const condition = new RegExp(value, "i");
+    return condition.test(child.content);
+  };
   handleSearch = (e) => {
-    const condition = new RegExp(e.target.value, "i");
-    const result = this.props.items.filter((child) => {
-      return condition.test(child.content);
-    });
-    console.log(result);
+    const result = this.props.items.filter((child) =>
+      this.regexSearch(child, e.target.value)
+    );
     this.setState({
       ...this.state,
       isOpen: true,
@@ -54,8 +55,8 @@ export default class index extends Component {
     this.props.onChange(newItemsSelected);
   };
 
-  _renderTag = (listItem) => {
-    return listItem.map((item) => (
+  _renderTag = (item) => {
+    return (
       <Tag
         key={item.id}
         onClick={() => {
@@ -64,7 +65,7 @@ export default class index extends Component {
       >
         {item.content}
       </Tag>
-    ));
+    );
   };
   _removeTag = (id) => {
     const currentItems = this.props.selectedItems.filter(
@@ -97,7 +98,7 @@ export default class index extends Component {
     const { query, isOpen } = this.state;
     return (
       <WrapMulSelection ref={this.wrapRef}>
-        <Tags>{this._renderTag(selectedItems)}</Tags>
+        <Tags>{selectedItems.map(this._renderTag)}</Tags>
         <InputMulSelection
           value={query}
           onChange={this.handleSearch}
