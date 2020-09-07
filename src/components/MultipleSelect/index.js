@@ -17,6 +17,14 @@ const Tag = styled.span`
   padding: 10px;
   display: inline-block;
   margin-bottom: 2px;
+  position: relative;
+`;
+const RemoveTag = styled.span`
+  position: absolute;
+  top: -2px;
+  right: 3px;
+  font-weight: bold;
+  cursor: pointer;
 `;
 
 export default class index extends Component {
@@ -57,12 +65,14 @@ export default class index extends Component {
 
   _renderTag = (item) => {
     return (
-      <Tag
-        key={item.id}
-        onClick={() => {
-          this._removeTag(item.id);
-        }}
-      >
+      <Tag key={item.id}>
+        <RemoveTag
+          onClick={() => {
+            this._removeTag(item.id);
+          }}
+        >
+          x
+        </RemoveTag>
         {item.content}
       </Tag>
     );

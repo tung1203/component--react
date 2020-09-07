@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import Button from "./components/Button";
 import Switch from "./components/Switch";
-import SelectionSearch from "./components/SelectionSearch";
 import List from "./components/List";
 import Tooltip from "./components/Tooltip";
 import Modal from "././components/Modal/";
@@ -21,39 +20,61 @@ export default class App extends Component {
         { id: 4, content: "anh" },
       ],
       selectedItems: [],
+      switchActive: false,
     };
   }
   toogleModal = () => {
-    this.setState({ ...this.state, isOpen: !this.state.isOpen });
+    this.setState({ isOpen: !this.state.isOpen });
   };
   handleChangeSelect = (selectedItems) => {
     this.setState({ selectedItems });
   };
+  toggleSwitchActive = () => {
+    this.setState({ switchActive: !this.state.switchActive });
+  };
   render() {
-    const { items, selectedItems } = this.state;
+    const { items, selectedItems, switchActive } = this.state;
     return (
       <>
-        {/* <Tooltip title="hihi" place="right">
-          <Button className="btn btn--primary" text="Button" />
-        </Tooltip>
-        <Tooltip title="hihi" place="bottom">
-          <Switch />
-        </Tooltip>
-        <Tooltip title="hihi" place="left">
-          <SelectionSearch>{(data) => <List data={data} />}</SelectionSearch>
-        </Tooltip> */}
-        {/* <Controller>
-          <Select>
-            <li>List element-2</li>
-          </Select>
-          <Tooltip />
-        </Controller> */}
-        {/* <Button
-          className="btn btn--primary"
-          onClick={this.toogleModal}
-          text="Open modal"
+        <Button text="" type="primary" size="m" isLoading={true}>
+          Button
+        </Button>
+        <Button type="primary" size="m" isLoading={false}>
+          Button
+        </Button>
+
+        <Switch
+          toggleSwitchActive={this.toggleSwitchActive}
+          isActive={switchActive}
+          color="primary"
+          type="round"
         />
-        <Modal isOpen={this.state.isOpen} toggle={this.toogleModal} /> */}
+        <Button onClick={this.toogleModal}>Open modal</Button>
+        <Modal
+          isOpen={this.state.isOpen}
+          animationType="fadeup"
+          animationTime={300}
+        >
+          <div
+            style={{
+              backgroundColor: "#fff",
+              maxWidth: 500,
+              padding: 20,
+              margin: 10,
+            }}
+          >
+            <Button type="button" onClick={this.toogleModal}>
+              Close
+            </Button>
+            <h3>Lorem</h3>
+            <p>
+              Lorem Ipsum is simply dummy text of the printing and typesetting
+              industry. Lorem Ipsum has been the industry standard dummy text
+              ever since the 1500s, when an unknown printer took a galley of
+              type and scrambled it to make a type specimen book.
+            </p>
+          </div>
+        </Modal>
         <MutipleSelect
           items={items}
           selectedItems={selectedItems}
@@ -63,6 +84,12 @@ export default class App extends Component {
             <List data={dataSelected} currentIdClick={currentIdClick} />
           )}
         </MutipleSelect>
+        <Tooltip title="ok nguyen thanh tung"  placement="top">
+          <span>List element-2</span>
+        </Tooltip>
+        <Tooltip title="abc" placement="top">
+          <span>List element-3</span>
+        </Tooltip>
       </>
     );
   }
