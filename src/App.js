@@ -19,6 +19,7 @@ export default class App extends Component {
         { id: 3, content: "my" },
         { id: 4, content: "anh" },
       ],
+      selectedItems: [],
       switchActive: false,
     };
   }
@@ -26,6 +27,7 @@ export default class App extends Component {
     this.setState({ isOpen: !this.state.isOpen });
   };
   handleChangeSelect = (selectedItems) => {
+    console.log(selectedItems);
     this.setState({ selectedItems });
   };
   toggleSwitchActive = () => {

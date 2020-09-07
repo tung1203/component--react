@@ -76,6 +76,7 @@ export default class index extends Component {
           return !itemsSelected.map((item) => item.id).includes(item.id);
         });
         this.setState({ itemsAvailable });
+        this.props.onChange(itemsSelected);
       }
     );
   };
@@ -110,6 +111,7 @@ export default class index extends Component {
           return !itemsSelected.map((item) => item.id).includes(item.id);
         });
         this.setState({ itemsAvailable });
+        this.props.onChange(itemsSelected);
       }
     );
   };
