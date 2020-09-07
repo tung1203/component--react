@@ -10,8 +10,8 @@ const InputMulSelection = styled.input`
   width: 100%;
   outline: none;
 `;
-const Tags = styled.div``;
-const Tag = styled.span`
+const StyledTags = styled.div``;
+const StyledTag = styled.span`
   margin-right: 3px;
   background-color: #eee;
   padding: 10px;
@@ -33,6 +33,7 @@ export default class index extends Component {
     this.state = {
       query: "",
       isOpen: false,
+      itemsSelected: [],
       itemsAvailable: [],
     };
     this.wrapRef = React.createRef();
@@ -42,7 +43,12 @@ export default class index extends Component {
     return condition.test(child.content);
   };
   handleSearch = (e) => {
-    const result = this.props.items.filter((child) =>
+    const { items } = this.props;
+    const { itemsSelected } = this.state;
+    const itemsAvailable = items.filter((item) => {
+      return !itemsSelected.map((item) => item.id).includes(item.id);
+    });
+    const result = itemsAvailable.filter((child) =>
       this.regexSearch(child, e.target.value)
     );
     this.setState({
@@ -58,14 +64,25 @@ export default class index extends Component {
 
   currentIdClick = (id) => {
     const currentItem = this.props.items.filter((item) => item.id === id);
-    const newItemsSelected = this.props.selectedItems;
-    newItemsSelected.push(...currentItem);
-    this.props.onChange(newItemsSelected);
+    this.setState(
+      {
+        ...this.state,
+        itemsSelected: [...this.state.itemsSelected, ...currentItem],
+      },
+      () => {
+        const { items } = this.props;
+        const { itemsSelected } = this.state;
+        const itemsAvailable = items.filter((item) => {
+          return !itemsSelected.map((item) => item.id).includes(item.id);
+        });
+        this.setState({ itemsAvailable });
+      }
+    );
   };
 
   _renderTag = (item) => {
     return (
-      <Tag key={item.id}>
+      <StyledTag key={item.id}>
         <RemoveTag
           onClick={() => {
             this._removeTag(item.id);
@@ -74,14 +91,27 @@ export default class index extends Component {
           x
         </RemoveTag>
         {item.content}
-      </Tag>
+      </StyledTag>
     );
   };
   _removeTag = (id) => {
-    const currentItems = this.props.selectedItems.filter(
+    const itemsSelected = this.state.itemsSelected.filter(
       (item) => item.id !== id
     );
-    this.props.onChange(currentItems);
+    this.setState(
+      {
+        ...this.state,
+        itemsSelected: itemsSelected,
+      },
+      () => {
+        const { items } = this.props;
+        const { itemsSelected } = this.state;
+        const itemsAvailable = items.filter((item) => {
+          return !itemsSelected.map((item) => item.id).includes(item.id);
+        });
+        this.setState({ itemsAvailable });
+      }
+    );
   };
 
   handleClickOutside(event) {
@@ -89,26 +119,29 @@ export default class index extends Component {
       this.setState({ ...this.state, isOpen: false });
     }
   }
-
   componentDidMount() {
     document.addEventListener("mousedown", this.handleClickOutside.bind(this));
-    this.setState({ ...this.state, itemsAvailable: this.props.items });
+
+    const { items } = this.props;
+    const { itemsSelected } = this.state;
+    const itemsAvailable = items.filter((item) => {
+      return !itemsSelected.map((item) => item.id).includes(item.id);
+    });
+    this.setState({
+      ...this.state,
+      itemsAvailable,
+    });
   }
 
   render() {
-    const { items, children, selectedItems } = this.props;
-    let { itemsAvailable } = this.state;
-    for (let i = 0; i < items.length; i++) {
-      for (let j = 0; j < selectedItems.length; j++) {
-        if (items[i].id === selectedItems[j].id) {
-          itemsAvailable = itemsAvailable.filter((item) => item.id !== i + 1);
-        }
-      }
-    }
-    const { query, isOpen } = this.state;
+    const { children } = this.props;
+    const { query, isOpen, itemsSelected, itemsAvailable } = this.state;
+
     return (
       <WrapMulSelection ref={this.wrapRef}>
-        <Tags>{selectedItems.map(this._renderTag)}</Tags>
+        <StyledTags>
+          {itemsSelected && itemsSelected.map(this._renderTag)}
+        </StyledTags>
         <InputMulSelection
           value={query}
           onChange={this.handleSearch}

@@ -19,7 +19,6 @@ export default class App extends Component {
         { id: 3, content: "my" },
         { id: 4, content: "anh" },
       ],
-      selectedItems: [],
       switchActive: false,
     };
   }
@@ -33,7 +32,7 @@ export default class App extends Component {
     this.setState({ switchActive: !this.state.switchActive });
   };
   render() {
-    const { items, selectedItems, switchActive } = this.state;
+    const { items, switchActive } = this.state;
     return (
       <>
         <Button text="" type="primary" size="m" isLoading={true}>
@@ -75,16 +74,12 @@ export default class App extends Component {
             </p>
           </div>
         </Modal>
-        <MutipleSelect
-          items={items}
-          selectedItems={selectedItems}
-          onChange={this.handleChangeSelect}
-        >
+        <MutipleSelect items={items} onChange={this.handleChangeSelect}>
           {(dataSelected, currentIdClick) => (
             <List data={dataSelected} currentIdClick={currentIdClick} />
           )}
         </MutipleSelect>
-        <Tooltip title="ok nguyen thanh tung"  placement="top">
+        <Tooltip title="ok nguyen thanh tung" placement="top">
           <span>List element-2</span>
         </Tooltip>
         <Tooltip title="abc" placement="top">
