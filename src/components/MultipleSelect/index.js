@@ -70,15 +70,19 @@ export default class index extends Component {
         itemsSelected: [...this.state.itemsSelected, ...currentItem],
       },
       () => {
-        const { items } = this.props;
         const { itemsSelected } = this.state;
-        const itemsAvailable = items.filter((item) => {
-          return !itemsSelected.map((item) => item.id).includes(item.id);
-        });
+        const itemsAvailable = this._findItemsAvailable();
         this.setState({ itemsAvailable });
         this.props.onChange(itemsSelected);
       }
     );
+  };
+  _findItemsAvailable = () => {
+    const { items } = this.props;
+    const { itemsSelected } = this.state;
+    return items.filter((item) => {
+      return !itemsSelected.map((item) => item.id).includes(item.id);
+    });
   };
 
   _renderTag = (item) => {
@@ -105,11 +109,7 @@ export default class index extends Component {
         itemsSelected: itemsSelected,
       },
       () => {
-        const { items } = this.props;
-        const { itemsSelected } = this.state;
-        const itemsAvailable = items.filter((item) => {
-          return !itemsSelected.map((item) => item.id).includes(item.id);
-        });
+        const itemsAvailable = this._findItemsAvailable();
         this.setState({ itemsAvailable });
         this.props.onChange(itemsSelected);
       }
@@ -124,11 +124,7 @@ export default class index extends Component {
   componentDidMount() {
     document.addEventListener("mousedown", this.handleClickOutside.bind(this));
 
-    const { items } = this.props;
-    const { itemsSelected } = this.state;
-    const itemsAvailable = items.filter((item) => {
-      return !itemsSelected.map((item) => item.id).includes(item.id);
-    });
+    const itemsAvailable = this._findItemsAvailable();
     this.setState({
       ...this.state,
       itemsAvailable,
