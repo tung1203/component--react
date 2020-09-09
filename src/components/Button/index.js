@@ -1,53 +1,8 @@
 import React, { Component } from "react";
-import styled, { css } from "styled-components";
+import PropTypes from "prop-types";
 import withTheme from "../../withTheme";
 import Loader from "../Loader";
-
-const ButtonComp = styled.div`
-  font-size: ${(props) => props.theme.fontSize};
-  padding: 1rem;
-  border-radius: 10px;
-  display: inline-block;
-  cursor: pointer;
-  background: #eee;
-
-  ${(props) => {
-    switch (props.type) {
-      case "primary":
-        return css`
-          background-color: ${(props) => props.theme.colorPrimary};
-          color: #fff;
-          font-weight: 500;
-        `;
-      case "secondary":
-        return css`
-          background-color: ${(props) => props.theme.colorSecondary};
-          color: #fff;
-          font-weight: 500;
-        `;
-      default:
-        return;
-    }
-  }}
-  ${(props) => {
-    switch (props.size) {
-      case "xl":
-        return css`
-          font-size: 30px;
-        `;
-      case "m":
-        return css`
-          font-size: 20px;
-        `;
-      case "s":
-        return css`
-          font-size: 10px;
-        `;
-      default:
-        return;
-    }
-  }}
-`;
+import StyledButton from "./StyledButton";
 
 class Button extends Component {
   render() {
@@ -59,10 +14,10 @@ class Button extends Component {
       theme,
       size,
       children,
-      isLoading,
+      isLoading
     } = this.props;
     return (
-      <ButtonComp
+      <StyledButton
         className={className}
         type={type}
         style={style}
@@ -71,8 +26,22 @@ class Button extends Component {
         size={size}
       >
         {isLoading ? <Loader /> : children}
-      </ButtonComp>
+      </StyledButton>
     );
   }
 }
+
+Button.propTypes = {
+  className: PropTypes.string,
+  style: PropTypes.string,
+  onClick: PropTypes.func,
+  type: PropTypes.string,
+  theme: PropTypes.object,
+  size: PropTypes.string,
+  children: PropTypes.array,
+  isLoading: PropTypes.bool
+};
+
+// eslint-disable-next-line react/jsx-props-no-spreading
+// export default withTheme(React.forwardRef((props, ref) => <Button innerRef={ref} {...props} />));
 export default withTheme(Button);
